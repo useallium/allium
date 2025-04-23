@@ -4,4 +4,4 @@ web = Blueprint('web', __name__)
 
 @web.route('/')
 def index():
-    return '<h1>Allium Web UI</h1>'
+    return render_template('home.html')
