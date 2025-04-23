@@ -1,8 +1,8 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request, session, redirect, url_for, flash
 from db import get_connection
-from werkzeug.security import generate_password_hash
+from werkzeug.security import generate_password_hash, check_password_hash
 
-api = Blueprint('api', __name__, url_prefix='/api')
+api = Blueprint('users_api', __name__, url_prefix='/api')
 
 # Get all users
 @api.route('/users', methods=['GET'])
@@ -21,14 +21,13 @@ def get_users():
 @api.route('/users/create', methods=['POST'])
 def create_user():
     # Get data from the request
-    data = request.get_json()
 
     # Extract the necessary fields
-    email = data.get('email')
-    password = data.get('password')
-    first_name = data.get('first_name')
-    last_name = data.get('last_name')
-    user_type = data.get('user_type')
+    email = request.form.get('email')
+    password = request.form.get('password')
+    first_name = request.form.get('first_name')
+    last_name = request.form.get('last_name')
+    user_type = request.form.get('user_type')
 
     # Validate the required fields
     if not email or not password or not first_name or not last_name or not user_type:
@@ -74,6 +73,7 @@ def create_user():
         cursor.close()
         conn.close()
 
+
 # Get a specific user by ID
 @api.route('/users/<int:user_id>', methods=['GET'])
 def get_user_by_id(user_id):
@@ -90,3 +90,42 @@ def get_user_by_id(user_id):
         return jsonify(user)
     else:
         return jsonify({'error': 'User not found'}), 404
+
+@api.route('/login', methods=["POST"])
+def login():
+    email = request.form.get('email')
+    password = request.form.get('password')
+
+    print(email, password)
+
+    conn = get_connection()
+    cursor = conn.cursor(dictionary=True)
+
+    try:
+        cursor.execute("SELECT * FROM users WHERE email = %s", (email,))
+        user = cursor.fetchone()
+
+        if not user or not check_password_hash(user['password_hash'], password):
+            flash('Invalid credentials')
+            return redirect(url_for('login.index'))
+
+        session['id'] = user['user_id']
+        session['email'] = user['email']
+        return redirect(url_for('dashboard.index'))  # Redirect to dashboard
+
+    except Exception as e:
+        # If connection is still valid, do a rollback
+        if conn.is_connected():
+            try:
+                conn.rollback()
+            except:
+                pass  # You might want to log that rollback failed.
+
+        return jsonify({'message': f'Error logging in user: {str(e)}'}), 401
+
+    finally:
+        # Ensure the cursor and connection are closed properly
+        if cursor:
+            cursor.close()
+        if conn:
+            conn.close()
