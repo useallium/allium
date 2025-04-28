@@ -1,14 +1,25 @@
-from flask import Flask
+from flask import Flask, request, jsonify
 from routes import init_routes
-import secrets
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+AUTH_TOKEN = os.getenv('AUTHTOKEN')
 
 
 def create_app():
     app = Flask(__name__)
-    app.secret_key = secrets.token_hex(32)
-    app.config['SESSION_TYPE'] = 'filesystem'  # You can use 'redis', 'memcached', etc. too.
-    app.config['SESSION_PERMANENT'] = False    # Session should not be permanent by default
-    app.config.from_pyfile('config.py')
+
+    @app.before_request
+    def check_auth_token():
+        if not request.path.startswith('/api/'):
+            return
+
+        token = request.headers.get('Authorization')
+        if not token or token != f"Bearer {AUTH_TOKEN}":
+            return jsonify({"error": "Unauthorized"}), 401
+
+
 
     init_routes(app)
     return app

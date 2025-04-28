@@ -5,7 +5,7 @@ from routes.web.register import register as register_routes
 from routes.web.login import login as login_routes
 from routes.web.dashboard import dashboard as dashboard_routes
 
-def init_routes(app):  # Renamed function to avoid conflict
+def init_routes(app):
     app.register_blueprint(users_api)
     app.register_blueprint(web_routes)
     app.register_blueprint(register_routes)
