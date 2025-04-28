@@ -5,7 +5,6 @@ class Internships(Database):
         """
         Retrieve all published internships
         """
-
         query = "SELECT * FROM Internships"
         self.cursor.execute(query)
         internships = self.cursor.fetchall()
