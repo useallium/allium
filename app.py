@@ -10,6 +10,8 @@ AUTH_TOKEN = os.getenv('AUTHTOKEN')
 def create_app():
     app = Flask(__name__)
 
+
+    #add support for auth tokens for backend calls, which users should not have access to
     @app.before_request
     def check_auth_token():
         if not request.path.startswith('/api/'):
