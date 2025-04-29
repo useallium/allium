@@ -27,3 +27,15 @@ class Internships(Database):
         self.cursor.execute(query, (applicant_id,))
         applied_internships = self.cursor.fetchall()
         return applied_internships
+    
+    def add_internship(self, company_id, recruiter_id, title, description, location, is_remote,
+                department, start_date, end_date, is_paid, salary, is_filled):
+        """
+        add a new internship to the database
+        """
+        query = """INSERT INTO Internships (company_id, recruiter_id, title, description, location, is_remote,
+                department, start_date, end_date, is_paid, salary, is_filled) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"""
+        self.cursor.execute(query,(company_id,recruiter_id,title,description,location,is_remote,department,start_date,end_date,is_paid,salary,is_filled))
+        self.conn.commit()
+        internship_id = self.cursor.lastrowid
+        return internship_id

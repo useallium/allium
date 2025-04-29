@@ -46,9 +46,8 @@ def update_user():
 #     # Validate the required fields
 #     if not email or not password or not first_name or not last_name or not user_type:
 #         return jsonify({'message': 'Missing required fields'}), 400
-
 #     # Hash the password
-#     password_hash = generate_password_hash(password)
+#      password_hash = generate_password_hash(password)
 
 #     # Establish database connection
 #     conn = connect()
