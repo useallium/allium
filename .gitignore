@@ -7,5 +7,7 @@ __pycache__
 .idea
 .allium
 tests/*
-alliumvenv
 .gitignore
+node_modules
+allium
+alliumvenv

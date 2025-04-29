@@ -44,8 +44,21 @@ class Companies(Database):
         """
         query = """INSERT INTO Companies (address, company_name, email, industry, website) VALUES (%s, %s, %s, %s, %s)"""
         self.cursor.execute(query,(address,company_name,email,industry,website))
+        self.conn.commit()
         company_id = self.cursor.lastrowid
         return company_id
+    
+    def remove_company(self,id):
+        """
+        remove a company from the database using given id
+        """
+        query = "DROP * FROM Companies WHERE company_id = %s"
+        self.cursor.execute(query,(id,))
+
+
+
+
+
 
     def returnstr():
         return "hello"

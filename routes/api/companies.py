@@ -4,6 +4,7 @@ from database.companies import Companies
 api = Blueprint('companies_api', __name__, url_prefix='/api')
 
 
+#RETURN ALL COMPANIES
 @api.route('/companies', methods=['GET'])
 def get_companies():
     db = Companies()
@@ -13,7 +14,9 @@ def get_companies():
     except:
         return jsonify("failed to fetch companies")
     
-# In the Flask route
+
+
+#RETURN COMPANY BY GIVEN ID
 @api.route('/companies/<int:company_id>', methods=['GET'])
 def get_company(company_id):
     print("company_id:", company_id)  # This is just for debugging; you can remove it later.
@@ -29,45 +32,53 @@ def get_company(company_id):
         return jsonify({"error": "Failed to fetch company"}), 500
 
 
+#ADD A NEW COMPANY
+@api.route('/companies/add', methods=['POST'])
+def add_company():
+    db = Companies()
+    try:
 
-# @api.route('/companies/add', methods=['POST'])
-# def add_companies():
-#     conn = connect()
-#     cursor = conn.cursor(dictionary=True)
+        data = request.get_json()
 
-#     data = request.get_json()
+        company = {
+            "address": data.get('address'),
+            "company_name": data.get('company_name'),
+            "email":data.get('email'),
+            "industry":data.get('industry'),
+            "website":data.get('website')
+        }
 
-#     address = data.get('address')
-#     company_name = data.get('company_name')
-#     email = data.get('email')
-#     industry = data.get('industry')
-#     website = data.get('website')
+        print(company)
 
-#     print(data)
+        retrieve_id = db.add_company(company['address'], company['company_name'],company['email'],company['industry'],company['website'])
+        #return jsonify({"message":"success", "company_info":{"company_id":1000000, "company_info":company}})
+        if retrieve_id != None:
+            return jsonify({"message":"success", "company_info":{"company_id":retrieve_id, "company_info":company}})
 
-#     if not address or not company_name or not email or not industry or not website:
-#         return jsonify({'message': 'Missing required fields'}), 400
+    except Exception as e:
+        return jsonify({"error":"failed to add company to database"}), 500
+    
+@api.route('/companies/update', methods=['POST'])
+def update_company():
+    db = Companies()
+    try:
+        data = request.get_json()
 
-#     try:
+        company = {
+            "address": data.get('address', None),
+            "company_name": data.get('company_name',None),
+            "email":data.get('email',None),
+            "industry":data.get('industry,None'),
+            "website":data.get('website',None)
+        }
 
-#         cursor.execute("""
-#         INSERT INTO Companies (address, company_name, email, industry, website) VALUES (%s, %s, %s, %s, %s)
-#         """, (address, company_name, email, industry, website))
 
-#         conn.commit()
+        #test to sync
+    
+        print(company)
 
-#         company_id = cursor.lastrowid
+        return jsonify(company)
 
-#     # Return success response with the newly created user's details
-#         return jsonify({
-#             'message': 'User created successfully',
-#             'company_id': company_id,
-#             'email': email,
-#             'company_name': company_name,
-#             'address': address,
-#             'industry': industry,
-#             'website': website,
-#         }), 201
 
-#     except Exception as e:
-#         return jsonify({'message': str(e)}), 500
+    except Exception as e:
+        pass
