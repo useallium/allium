@@ -72,6 +72,8 @@ def update_company():
             "website":data.get('website',None)
         }
 
+
+        #test to sync
     
         print(company)
 
