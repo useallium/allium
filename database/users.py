@@ -19,18 +19,20 @@ class Users(Database):
         user = self.cursor.fetchone()
         return user
 
-    def update_user(self, user_id, name, email, phone, address):
+    def update_user(self, user_id, email, first_name, last_name, password_hash, user_type, profile_picture):
         """
         Update a user's information in the database given their user_id.
         """
         query = """
             UPDATE Users
-            SET name = %s,
-                email = %s,
-                phone = %s,
-                address = %s
+            SET email = %s,
+                first_name = %s,
+                last_name = %s,
+                password_hash = %s,
+                user_type = %s,
+                profile_picture = %s
             WHERE user_id = %s
         """
-        self.cursor.execute(query, (name, email, phone, address, user_id))
-        self.conn.commit()  # Commit the changes to the database
-        return self.cursor.rowcount  # Returns the number of rows updated (1 if successful, 0 if no change)
+        self.cursor.execute(query, (email, first_name, last_name, password_hash, user_type, profile_picture, user_id))
+        self.conn.commit()
+        return self.cursor.rowcount
