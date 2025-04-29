@@ -10,6 +10,24 @@ class Companies(Database):
         companies = self.cursor.fetchall()
         return companies
     
+    def update_company(self, company_id, address, company_name, email, industry, website):
+        """
+        Update company information in the database by company_id
+        """
+        query = """
+            UPDATE Companies
+            SET address = %s,
+                company_name = %s,
+                email = %s,
+                industry = %s,
+                website = %s
+            WHERE company_id = %s
+        """
+        self.cursor.execute(query, (address, company_name, email, industry, website, company_id))
+        self.conn.commit()
+        return self.cursor.rowcount  # Optional: returns number of rows updated
+
+
 
     def get_company_by_id(self, company_id):
         """
@@ -29,6 +47,8 @@ class Companies(Database):
         company_id = self.cursor.lastrowid
         return company_id
 
+    def returnstr():
+        return "hello"
 
 
 
