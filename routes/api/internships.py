@@ -33,10 +33,10 @@ def add_internship():
             "is_filled": bool(data.get('is_filled')),
         }
 
-        print("Internship Data:", internship)
+        existing_internships = db.get_all_internships()
 
-        retrieve_id = db.add_internship(internship["company_id"],internship["recruiter_id"],internship["title"],internship["description"],internship["location"],internship["is_remote"],internship["department"],internship["start_date"],internship["end_date"],internship["is_paid"],internship["salary"],internship["is_filled"],
-)
+    
+        retrieve_id = db.add_internship(internship["company_id"],internship["recruiter_id"],internship["title"],internship["description"],internship["location"],internship["is_remote"],internship["department"],internship["start_date"],internship["end_date"],internship["is_paid"],internship["salary"],internship["is_filled"],)
         if retrieve_id is not None:
             return jsonify({
                 "message": "success",
@@ -50,3 +50,35 @@ def add_internship():
         return jsonify({"error": f"Invalid data format: {str(ve)}"}), 400
     except Exception as e:
         return jsonify({"error": f"Server error: {str(e)}"}), 500
+    
+@api.route('/internships', methods=['GET'])
+def get_internships():
+    db = Internships()
+    
+    try:
+        internships = db.get_all_internships()
+        return jsonify(internships)
+    
+    except Exception as e:
+        return jsonify({"error":f"Server error: {str(e)}"}),500
+
+
+@api.route('/internships/remove/<int:internship_id>', methods=["POST"])
+def remove_internship(internship_id):
+    db = Internships()
+
+    try:
+        is_removed = db.remove_internship(internship_id)
+        print(is_removed)
+        if is_removed:
+            return jsonify({"status":"success", "message":"successfully removed internship with id: {}".format(internship_id)})
+        else:
+            return jsonify({"status":"failed", "message":"could not remove internship with id: {}".format(internship_id)})
+
+
+    except Exception as e:
+        pass
+
+
+
+    
