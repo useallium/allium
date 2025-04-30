@@ -39,3 +39,9 @@ class Internships(Database):
         self.conn.commit()
         internship_id = self.cursor.lastrowid
         return internship_id
+    
+    def remove_internship(self, internship_id):
+        query = "DELETE FROM Internships WHERE internship_id = %s"
+        self.cursor.execute(query,(internship_id,))
+        self.conn.commit()
+        return self.cursor.rowcount > 0
