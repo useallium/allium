@@ -33,8 +33,6 @@ def add_internship():
             "is_filled": bool(data.get('is_filled')),
         }
 
-        existing_internships = db.get_all_internships()
-
     
         retrieve_id = db.add_internship(internship["company_id"],internship["recruiter_id"],internship["title"],internship["description"],internship["location"],internship["is_remote"],internship["department"],internship["start_date"],internship["end_date"],internship["is_paid"],internship["salary"],internship["is_filled"],)
         if retrieve_id is not None:
@@ -63,21 +61,22 @@ def get_internships():
         return jsonify({"error":f"Server error: {str(e)}"}),500
 
 
-@api.route('/internships/remove/<int:internship_id>', methods=["POST"])
-def remove_internship(internship_id):
+@api.route('/internships/remove', methods=["POST"])
+def remove_internship():
     db = Internships()
 
     try:
-        is_removed = db.remove_internship(internship_id)
-        print(is_removed)
-        if is_removed:
-            return jsonify({"status":"success", "message":"successfully removed internship with id: {}".format(internship_id)})
-        else:
-            return jsonify({"status":"failed", "message":"could not remove internship with id: {}".format(internship_id)})
+        data = request.get_json()
+        internship_id = int(data["internship_id"])
 
+        is_removed = db.remove_internship(internship_id)
+        if is_removed:
+            return jsonify({"status":"success", "message":"successfully removed internship with id: {}".format(internship_id)}), 201
+        else:
+            return jsonify({"status":"failed", "message":"could not remove internship with id: {}".format(internship_id)}), 400
 
     except Exception as e:
-        pass
+        return jsonify({"error":f"Server error: {str(e)}"}),500
 
 
 
