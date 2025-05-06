@@ -4,6 +4,7 @@ from routes.api.companies import api as companies_api
 from routes.web.register import register as register_routes
 from routes.web.login import login as login_routes
 from routes.web.dashboard import dashboard as dashboard_routes
+from routes.api.internships import api as internships_api
 
 def init_routes(app):
     app.register_blueprint(users_api)
@@ -12,3 +13,4 @@ def init_routes(app):
     app.register_blueprint(companies_api)
     app.register_blueprint(login_routes)
     app.register_blueprint(dashboard_routes)
+    app.register_blueprint(internships_api)
