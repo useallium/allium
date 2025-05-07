@@ -1,6 +1,7 @@
 from database.base import Database
 
 class Users(Database):
+
     def get_all_users(self):
         """
         Retrieve all users in database
@@ -36,3 +37,5 @@ class Users(Database):
         self.cursor.execute(query, (email, first_name, last_name, password_hash, user_type, profile_picture, user_id))
         self.conn.commit()
         return self.cursor.rowcount
+    
+    #Test kommentar, hej hej
