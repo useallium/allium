@@ -6,8 +6,8 @@ from database.users import Users
 api = Blueprint('users_api', __name__, url_prefix='/api')
 
 
-@api.route('users/update', methods=['POST'])
-def update_user():
+@api.route('users', methods=['POST'])
+def get_all_users():
     try:
         data = request.get_json()
         print(data)

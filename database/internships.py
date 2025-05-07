@@ -40,6 +40,20 @@ class Internships(Database):
         internship_id = self.cursor.lastrowid
         return internship_id
     
+    def update_internship(self, company_id, recruiter_id, title, description, location, is_remote,
+                department, start_date, end_date, is_paid, salary, is_filled):
+        """
+        add a new internship to the database
+        """
+        query = """UPDATE INTO Internships (company_id, recruiter_id, title, description, location, is_remote,
+                department, start_date, end_date, is_paid, salary, is_filled) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"""
+        self.cursor.execute(query,(company_id,recruiter_id,title,description,location,is_remote,department,start_date,end_date,is_paid,salary,is_filled))
+        self.conn.commit()
+        internship_id = self.cursor.lastrowid
+        return internship_id
+    
+    
+    
     def remove_internship(self, internship_id):
         query = "DELETE FROM Internships WHERE internship_id = %s"
         self.cursor.execute(query,(internship_id,))
