@@ -6,7 +6,7 @@ __pycache__
 .env
 .idea
 .allium
-tests/*
+test/*
 .gitignore
 node_modules
 allium

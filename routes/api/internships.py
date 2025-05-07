@@ -79,5 +79,30 @@ def remove_internship():
         return jsonify({"error":f"Server error: {str(e)}"}),500
 
 
+@api.route('/internships/update', methods=['POST'])
+def update_internship():
+    db = Internships()
+    try:
+        data = request.get_json()
 
-    
+        internship = {
+            "internship_id": data.get('internship_id', None),
+            "title": data.get('title', None),
+            "description": data.get('description', None),
+            "location": data.get('location', None),
+            "is_remote": data.get('is_remote', None),
+            "department": data.get('department', None),
+            "start_date": data.get('start_date', None),
+            "end_date": data.get('end_date', None),
+            "is_paid": data.get('is_paid', None),
+            "salary": data.get('salary', None),
+            "is_filled": data.get('is_filled', None)
+        }
+
+        # Test print to check received data
+        print(internship)
+
+        return jsonify(internship)
+
+    except Exception as e:
+        return jsonify({"error": f"Server error: {str(e)}"}), 500
