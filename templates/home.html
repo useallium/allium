@@ -63,16 +63,23 @@
         </svg>
       </a>
 
-      </div>
       <div class="header-buttons">
-        <button class="btn btn-light"">
-          <a href="/login">Log in</a>
-          
-        </button>
-        <button class="btn btn-dark">
-          <a href="/register">Register</a>
-        </button>
+        {% if 'user_id' in session %}
+          <!-- If logged in, show logout button -->
+          <button class="btn btn-light">
+            <a href="/logout">Log out</a>
+          </button>
+        {% else %}
+          <!-- If not logged in, show login and register buttons -->
+          <button class="btn btn-light">
+            <a href="/login">Log in</a>
+          </button>
+          <button class="btn btn-dark">
+            <a href="/register">Register</a>
+          </button>
+        {% endif %}
       </div>
+      
     </div>
     <!-- Example: Loading an image from static folder -->
      

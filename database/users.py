@@ -38,4 +38,26 @@ class Users(Database):
         self.conn.commit()
         return self.cursor.rowcount
     
+
     
+
+    def add_user(self, email, first_name, last_name, password_hash, user_type):
+        query = "INSERT INTO Users (email, first_name, last_name, password_hash, user_type) VALUES (%s, %s, %s, %s, %s)"
+        self.cursor.execute(query,(email,first_name,last_name,password_hash,user_type))
+        self.conn.commit()
+        return self.cursor.lastrowid
+    
+    def get_user_by_email(self, email):
+        query = "SELECT user_id, email, password_hash, user_type FROM Users WHERE email = %s"
+        self.cursor.execute(query, (email,))
+        result = self.cursor.fetchone()
+
+        if result:
+            return {
+                'user_id': result['user_id'],
+                'email': result['email'],
+                'password_hash': result['password_hash'],
+                'user_type': result['user_type']
+            }
+        return None
+
