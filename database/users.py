@@ -38,4 +38,4 @@ class Users(Database):
         self.conn.commit()
         return self.cursor.rowcount
     
-    #Test kommentar, hej hej
+    
