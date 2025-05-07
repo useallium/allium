@@ -45,3 +45,38 @@ class Internships(Database):
         self.cursor.execute(query,(internship_id,))
         self.conn.commit()
         return self.cursor.rowcount > 0
+
+    def update_internship(self, internship_id, title, description, location, is_remote, department, start_date, end_date, is_paid, salary, is_filled):
+        """
+        Update internship information in the database by internship_id
+        """
+        query = """
+            UPDATE Internships
+            SET title = %s,
+                description = %s,
+                location = %s,
+                is_remote = %s,
+                department = %s,
+                start_date = %s,
+                end_date = %s,
+                is_paid = %s,
+                salary = %s,
+                is_filled = %s,
+                updated_at = NOW()
+            WHERE internship_id = %s
+        """
+        self.cursor.execute(query, (
+            title,
+            description,
+            location,
+            is_remote,
+            department,
+            start_date,
+            end_date,
+            is_paid,
+            salary,
+            is_filled,
+            internship_id
+        ))
+        self.conn.commit()
+        return self.cursor.rowcount

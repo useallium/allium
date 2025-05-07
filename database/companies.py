@@ -48,20 +48,17 @@ class Companies(Database):
         company_id = self.cursor.lastrowid
         return company_id
     
-    def remove_company(self,id):
+    def remove_company(self, id):
         """
-        remove a company from the database using given id
+        Remove a company from the database using given id
         """
-        query = "DROP * FROM Companies WHERE company_id = %s"
-        self.cursor.execute(query,(id,))
+        query = "DELETE FROM Companies WHERE company_id = %s"
+        self.cursor.execute(query, (id,))
+        self.conn.commit()
+        return self.cursor.rowcount > 0
 
 
 
-
-
-
-    def returnstr():
-        return "hello"
 
 
 
