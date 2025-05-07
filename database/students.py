@@ -7,3 +7,5 @@ class Students(Database):
         users = self.cursor.fetchall()
         return users
     
+
+    
