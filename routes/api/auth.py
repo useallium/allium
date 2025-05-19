@@ -35,36 +35,47 @@ def logout():
 
 @api.route('/auth/signup', methods=['POST'])
 def signup():
+    # Extract form data
     email = request.form.get('email')
     password = request.form.get('password')
     first_name = request.form.get('first_name')
     last_name = request.form.get('last_name')
     user_type = request.form.get('user_type')
+
+    # Validate input
     if not email or not password or not first_name or not last_name or not user_type:
-        return jsonify({"message":"Missing credentials"}), 400
+        return jsonify({"message": "Missing credentials"}), 400
 
     try:
         db = Users()
 
+        # Check if email already exists
+        if db.get_user_by_email(email):
+            return jsonify({"message": "Email already registered"}), 400
+
+        # Hash the password
         hashed_password = generate_password_hash(password)
 
-        users = db.get_all_users()
-        for user in users:
-            if user['email'] == email:
-                return jsonify({"message":"Email already registered"}), 400
-            else:
-                added_user = db.add_user(email, first_name, last_name, hashed_password, user_type)
-                if added_user != None:
-                    session['user_id'] = added_user['user_id']
-                    session['user_type'] = added_user['user_type']
+        # Add user to database
+        user_info = db.add_user(email, first_name, last_name, hashed_password, user_type)
 
-                    if added_user['user_type'] == 'student':
-                        return redirect(url_for('URL_FOR_STUDENT_SIGNUP.index'))
-                    elif added_user['user_type'] == 'recruiter':
-                        return redirect(url_for('URL_FOR_RECRUITER_SIGNUP.index'))
+        if user_info is not None:
+            # Store session data
+            session['user_id'] = user_info['user_id']
+            session['user_type'] = user_info['user_type']
+
+            # Redirect based on user type
+            if user_info['user_type'] == 'student':
+                return redirect(url_for('dashboard.index'))
+            elif user_info['user_type'] == 'recruiter':
+                return redirect(url_for('dashboard.index'))
+
+        return jsonify({"message": "User could not be created"}), 500
+
 
     except Exception as e:
-        return jsonify({"message":f'Error during signup: {str(e)}'}),500
+        # Catch-all for unexpected errors
+        return jsonify({"message": f"Error during signup: {str(e)}"}), 500
 
 
 
