@@ -45,7 +45,8 @@ class Users(Database):
         query = "INSERT INTO Users (email, first_name, last_name, password_hash, user_type) VALUES (%s, %s, %s, %s, %s)"
         self.cursor.execute(query,(email,first_name,last_name,password_hash,user_type))
         self.conn.commit()
-        return self.cursor.lastrowid
+        user_id = self.cursor.lastrowid
+        return self.get_user_by_id(user_id)
     
     def get_user_by_email(self, email):
         query = "SELECT user_id, email, password_hash, user_type FROM Users WHERE email = %s"
