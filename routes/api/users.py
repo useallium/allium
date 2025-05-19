@@ -16,22 +16,6 @@ def get_all_users():
     except Exception as e:
         return jsonify({"message":"failure"}),500
 
-
-
-# Get all users
-# @api.route('/users', methods=['GET'])
-# def get_users():
-#     # conn = connect()
-#     cursor = conn.cursor(dictionary=True)
-
-#     cursor.execute("SELECT * FROM users")
-#     users = cursor.fetchall()
-
-#     cursor.close()
-#     conn.close()
-
-#     return jsonify(users)
-
 @api.route('/users/create', methods=['POST'])
 def create_user():
     email = request.form.get('email')
@@ -68,62 +52,3 @@ def create_user():
         # Handle any database error
         
         return jsonify({'message': f'Error creating user: {str(e)}'}), 500
-
-    
-
-
-# # Get a specific user by ID
-# @api.route('/users/<int:user_id>', methods=['GET'])
-# def get_user_by_id(user_id):
-#     conn = connect()
-#     cursor = conn.cursor(dictionary=True)
-
-#     cursor.execute("SELECT * FROM users WHERE user_id = %s", (user_id,))
-#     user = cursor.fetchone()
-
-#     cursor.close()
-#     conn.close()
-
-#     if user:
-#         return jsonify(user)
-#     else:
-#         return jsonify({'error': 'User not found'}), 404
-
-# @api.route('/login', methods=["POST"])
-# def login():
-#     email = request.form.get('email')
-#     password = request.form.get('password')
-
-#     print(email, password)
-
-#     conn = connect()
-#     cursor = conn.cursor(dictionary=True)
-
-#     try:
-#         cursor.execute("SELECT * FROM users WHERE email = %s", (email,))
-#         user = cursor.fetchone()
-
-#         if not user or not check_password_hash(user['password_hash'], password):
-#             flash('Invalid credentials')
-#             return redirect(url_for('login.index'))
-
-#         session['id'] = user['user_id']
-#         session['email'] = user['email']
-#         return redirect(url_for('dashboard.index'))  # Redirect to dashboard
-
-#     except Exception as e:
-#         # If connection is still valid, do a rollback
-#         if conn.is_connected():
-#             try:
-#                 conn.rollback()
-#             except:
-#                 pass  # You might want to log that rollback failed.
-
-#         return jsonify({'message': f'Error logging in user: {str(e)}'}), 401
-
-#     finally:
-#         # Ensure the cursor and connection are closed properly
-#         if cursor:
-#             cursor.close()
-#         if conn:
-#             conn.close()
