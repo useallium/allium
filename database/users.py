@@ -1,6 +1,7 @@
 from database.base import Database
 
 class Users(Database):
+
     def get_all_users(self):
         """
         Retrieve all users in database
@@ -37,6 +38,9 @@ class Users(Database):
         self.conn.commit()
         return self.cursor.rowcount
     
+
+    
+
     def add_user(self, email, first_name, last_name, password_hash, user_type):
         query = "INSERT INTO Users (email, first_name, last_name, password_hash, user_type) VALUES (%s, %s, %s, %s, %s)"
         self.cursor.execute(query,(email,first_name,last_name,password_hash,user_type))
@@ -57,3 +61,4 @@ class Users(Database):
                 'user_type': result['user_type']
             }
         return None
+
