@@ -1,4 +1,5 @@
 from database.base import Database
+from werkzeug.security import generate_password_hash, check_password_hash
 
 class Users(Database):
 
@@ -20,7 +21,7 @@ class Users(Database):
         user = self.cursor.fetchone()
         return user
 
-    def update_user(self, user_id, email, first_name, last_name, password_hash, user_type, profile_picture):
+    def update_user(self, user_id, email, first_name, last_name, user_type, profile_picture):
         """
         Update a user's information in the database given their user_id.
         """
@@ -29,17 +30,27 @@ class Users(Database):
             SET email = %s,
                 first_name = %s,
                 last_name = %s,
-                password_hash = %s,
                 user_type = %s,
                 profile_picture = %s
             WHERE user_id = %s
         """
-        self.cursor.execute(query, (email, first_name, last_name, password_hash, user_type, profile_picture, user_id))
+        self.cursor.execute(query, (email, first_name, last_name, user_type, profile_picture, user_id))
         self.conn.commit()
         return self.cursor.rowcount
     
 
+    def change_password(self, user_id, new_password):
+        query="""
+            Update Users
+            SET password_hash = %s
+            WHERE user_id = %s
+        """
+        password_hashed = generate_password_hash(new_password)
+        self.cursor.execute(query, (password_hashed, user_id))
+        self.conn.commit()
+        return self.cursor.rowcount
     
+        
 
     def add_user(self, email, first_name, last_name, password_hash, user_type):
         query = "INSERT INTO Users (email, first_name, last_name, password_hash, user_type) VALUES (%s, %s, %s, %s, %s)"
