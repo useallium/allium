@@ -66,9 +66,9 @@ def signup():
 
             # Redirect based on user type
             if user_info['user_type'] == 'student':
-                return redirect(url_for('dashboard.index'))
+                return redirect(url_for('auth.index'))
             elif user_info['user_type'] == 'recruiter':
-                return redirect(url_for('dashboard.index'))
+                return redirect(url_for('auth.index'))
 
         return jsonify({"message": "User could not be created"}), 500
 

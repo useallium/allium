@@ -1,6 +1,8 @@
 from flask import Blueprint, jsonify, request
 from database.applications import Applications
 
+#test
+
 api = Blueprint('applications_api', __name__, url_prefix='/api')
 
 @api.route('/applications', methods=["GET"])

@@ -8,11 +8,13 @@ from routes.api.internships import api as internships_api
 from routes.api.login import api as login_api
 from routes.api.application import api as application_api
 from routes.api.auth import api as auth_api
+from routes.web.auth import auth as auth_routes
 
 def init_routes(app):
     app.register_blueprint(users_api)
     app.register_blueprint(web_routes)
     app.register_blueprint(register_routes)
+    app.register_blueprint(auth_routes)
     app.register_blueprint(companies_api)
     app.register_blueprint(login_routes)
     app.register_blueprint(dashboard_routes)
