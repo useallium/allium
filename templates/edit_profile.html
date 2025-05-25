@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Profile</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+<div class="container mt-5">
+    <h2>Edit Your Profile</h2>
+    <form method="POST">
+
+        {% if current_user.user_type == 'student' %}
+            <div class="mb-3">
+                <label class="form-label">University</label>
+                <input type="text" name="university" class="form-control" value="{{ student.university or '' }}" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="degree" class="form-label">Degree</label>
+                <select class="form-select" id="degree" name="degree" required>
+                    <option value="">-- Select Degree --</option>
+                    <option value="bachelor" {% if student.degree == 'bachelor' %}selected{% endif %}>Bachelor</option>
+                    <option value="masters" {% if student.degree == 'masters' %}selected{% endif %}>Master</option>
+                    <option value="upper-secondary" {% if student.degree == 'upper-secondary' %}selected{% endif %}>Upper Secondary</option>
+                    <option value="none" {% if student.degree == 'none' %}selected{% endif %}>None</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="graduation_year" class="form-label">Graduation Year</label>
+                <input type="number" class="form-control" id="graduation_year" name="graduation_year"
+                       placeholder="e.g. 2025" min="1900" max="2100" value="{{ student.graduation_year or '' }}">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Resume (Link or filename)</label>
+                <input type="text" name="resume" class="form-control" value="{{ student.resume or '' }}">
+            </div>
+        {% endif %}
+        
+        {% if current_user.user_type == 'recruiter' and recruiter is defined %}
+            <div class="mb-3">
+                <label class="form-label">Job Title</label>
+                <input type="text" name="job_title" class="form-control" value="{{ recruiter.job_title or '' }}">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Phone Number</label>
+                <input type="text" name="phone_number" class="form-control" value="{{ recruiter.phone_number or '' }}">
+            </div>
+        {% endif %}
+
+        <button type="submit" class="btn btn-primary">Update Profile</button>
+        <a href="{{ url_for('dashboard.index') }}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+</body>
+</html>

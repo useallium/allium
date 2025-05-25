@@ -14,7 +14,7 @@ db_config = {
 
 connection_pool = pooling.MySQLConnectionPool(
     pool_name="allium_pool",
-    pool_size=5,
+    pool_size=32,
     **db_config
 )
 

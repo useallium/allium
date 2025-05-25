@@ -1,11 +1,54 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify,request
+import requests
 from database.internships import Internships
 from datetime import datetime
+from database.base import Database
+from flask_login import login_required, current_user
 
 api = Blueprint('internships_api', __name__, url_prefix='/api')
 
+
+@api.route('internships/manage', methods=['GET'])
+@login_required
+def manage_internships():
+    if current_user.user_type != 'recruiter':
+        return jsonify({"error": "Unauthorized access"}), 403
+
+    db = Internships()
+    try:
+        internships = db.get_internships_by_recruiter(current_user.id)
+
+        internships_with_applicants = []
+        database = Database()  # Assuming this is the correct shared class with `cursor.callproc`
+
+        for internship in internships:
+            internship_id = internship['internship_id']
+
+            # Fetch total applications using stored procedure
+            database.cursor.callproc('GetTotalApplications', [internship_id])
+            total_applications = 0
+            for result in database.cursor.stored_results():
+                row = result.fetchone()
+                if row:
+                    total_applications = row['total_applications']
+
+            # Get full applicant details
+            applicants = db.get_applicants_for_internship(internship_id)
+
+            internship_data = dict(internship)
+            internship_data['applicants'] = applicants
+            internship_data['total_applications'] = total_applications
+
+            internships_with_applicants.append(internship_data)
+
+        return jsonify(internships_with_applicants), 200
+
+    except Exception as e:
+        return jsonify({"error": f"Server error: {str(e)}"}), 500
+
+
 @api.route('/internships/add', methods=["POST"])
-def add_internship():
+def api_add_internship():
     db = Internships()
     try:
         data = request.get_json()
@@ -106,3 +149,4 @@ def update_internship():
 
     except Exception as e:
         return jsonify({"error": f"Server error: {str(e)}"}), 500
+
