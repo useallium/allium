@@ -1,0 +1,19 @@
+<form method="POST" action="{{ url_for('dashboard.complete_recruiter_profile') }}">
+
+  <label for="company">Select Company:</label>
+  <select name="company_id" id="company" required>
+    <option value="">-- Select a Company --</option>
+    {% for company in companies %}
+      <option value="{{ company.company_id }}">{{ company.company_name }}</option>
+    {% endfor %}
+  </select>
+
+  <!-- Add more recruiter profile fields as needed -->
+  <label for="job_title">Job Title:</label>
+  <input type="text" name="job_title" required>
+
+  <label for="phone_number">Phone Number:</label>
+  <input type="text" name="phone_number" required>
+
+  <button type="submit">Submit</button>
+</form>

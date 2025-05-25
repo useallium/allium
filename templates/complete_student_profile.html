@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Complete Student Profile</title>
+</head>
+<body>
+  <h1>Complete Your Student Profile</h1>
+  <form method="POST">
+    <label for="university">University:</label>
+    <input type="text" id="university" name="university" required><br><br>
+
+    <label for="degree">Degree:</label>
+    <select id="degree" name="degree" required>
+      <option value="bachelor">Bachelor</option>
+      <option value="masters">Masters</option>
+      <option value="upper-secondary">Upper-secondary</option>
+      <option value="none">None</option>
+    </select><br><br>
+
+    <label for="graduation_year">Graduation Year:</label>
+    <input type="text" id="graduation_year" name="graduation_year" required><br><br>
+
+    <label for="resume">Resume (URL or Text):</label>
+    <input type="text" id="resume" name="resume"><br><br>
+
+    <button type="submit">Submit</button>
+  </form>
+</body>
+</html>

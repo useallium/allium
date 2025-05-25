@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Manage Internships</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+<a href="{{ url_for('dashboard.index') }}" class="text-decoration-none text-dark">
+    <i class="bi bi-arrow-left"></i> Back
+</a>
+
+<body class="bg-light">
+<div class="container mt-5">
+    <h2>Your Internships</h2>
+    <a href="{{ url_for('internship.add_internship') }} " class="btn btn-primary mb-3">Add New Internship</a>
+
+    {% if internships %}
+    {% for internship in internships %}
+        <div class="card mb-4 shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">{{ internship.title }}</h5>
+                
+                <p><strong>Description:</strong><br>{{ internship.description or "No description provided." }}</p>
+
+                <p><strong>Location:</strong> {{ internship.location }} ({{ "Remote" if internship.is_remote else "On-site" }})</p>
+
+                <p><strong>Applicants: {{ internship.total_applications if internship.total_applications is defined else internship.applicants|length }}</strong></p>
+                {% if internship.applicants %}
+                    <ul class="list-group">
+                        {% for applicant in internship.applicants %}
+                            <li class="list-group-item">
+                                <strong>Name:</strong> {{ applicant.first_name }} {{ applicant.last_name }}<br>
+                                <strong>Email:</strong> {{ applicant.email }}<br>
+                                <strong>School:</strong> {{ applicant.university or "Unknown University" }} – {{ applicant.degree or "Unknown Degree" }} (Grad: {{ applicant.graduation_year or "N/A" }})<br>
+                                <strong>Resume:</strong> {{ applicant.application_resume or applicant.resume or "No Resume Provided" }}<br>
+        <form method="POST" action="{{ url_for('applications_api.update_application_status') }}">
+        
+    
+        <input type="hidden" name="application_id" value="{{ applicant.application_id }}">
+        <div class="input-group mb-3">
+            <select class="form-select" name="status" required>
+                <option disabled>Update Status</option>
+                <option value="pending" {% if applicant.status == 'pending' %}selected{% endif %}>Pending</option>
+                <option value="interview" {% if applicant.status == 'interview' %}selected{% endif %}>Interview</option>
+                <option value="rejected" {% if applicant.status == 'rejected' %}selected{% endif %}>Rejected</option>
+                <option value="offer" {% if applicant.status == 'offer' %}selected{% endif %}>Offer</option>
+                <option value="hired" {% if applicant.status == 'hired' %}selected{% endif %}>Hired</option>
+            </select>
+            <button class="btn btn-outline-primary" type="submit">Update</button>
+        </div>
+    </form>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p><em>No applicants yet.</em></p>
+                    {% endif %}
+                    
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>You currently have no internships posted.</p>
+    {% endif %}
+</div>
+</body>
+</html>
