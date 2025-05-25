@@ -55,7 +55,15 @@ class Companies(Database):
         query = "DELETE FROM Companies WHERE company_id = %s"
         self.cursor.execute(query, (id,))
         self.conn.commit()
+        self.conn.close()
         return self.cursor.rowcount > 0
+    
+    def get_company_info_signup(self):
+        query = 'SELECT company_id, company_name FROM Companies'
+        x = self.cursor.execute(query)
+        
+        return   
+        
 
 
 

@@ -1,69 +1,149 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <link rel="icon" href="/static/images/alliumfavicon.svg" type="image/x-icon">
-    <meta name="apple-mobile-web-app-status-bar-style" content="green">
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Allium</title>
+    <title>Dashboard</title>
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="/static/css/styles.css" />
   </head>
-  <body>
-    <div class="header">
-      <div allium-logo>
-        <a href="/">
+  <body class="bg-light">
+    <div class="container py-5">
+      <h1 class="mb-4">
+        Welcome, {{ current_user.first_name }} {{ current_user.last_name }}!
+      </h1>
 
-                <svg
-          width="153"
-          height="24"
-          viewBox="0 0 153 24"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M37 12C37 16.4183 33.4503 20 29.0714 20C24.6926 20 21.1429 16.4183 21.1429 12C21.1429 7.58172 24.6926 4 29.0714 4C33.4503 4 37 7.58172 37 12Z"
-            fill="#0E0E0E"
-          />
-          <path
-            d="M18.5 12C18.5 14.9455 16.1335 17.3333 13.2143 17.3333C10.2951 17.3333 7.92857 14.9455 7.92857 12C7.92857 9.05448 10.2951 6.66667 13.2143 6.66667C16.1335 6.66667 18.5 9.05448 18.5 12Z"
-            fill="#0E0E0E"
-          />
-          <path
-            d="M5.28571 12C5.28571 13.4728 4.10247 14.6667 2.64286 14.6667C1.18325 14.6667 0 13.4728 0 12C0 10.5272 1.18325 9.33333 2.64286 9.33333C4.10247 9.33333 5.28571 10.5272 5.28571 12Z"
-            fill="#0E0E0E"
-          />
-          <path
-            d="M46.6316 23.7767H43L51.1601 0.915349H55.1128L63.2729 23.7767H59.6413L53.2306 5.06791H53.0534L46.6316 23.7767ZM47.2406 14.8242H59.0212V17.7265H47.2406V14.8242Z"
-            fill="black"
-          />
-          <path
-            d="M68.3451 0.915349V23.7767H65.0346V0.915349H68.3451Z"
-            fill="black"
-          />
-          <path
-            d="M74.8622 0.915349V23.7767H71.5517V0.915349H74.8622Z"
-            fill="black"
-          />
-          <path
-            d="M78.0688 23.7767V6.6307H81.3793V23.7767H78.0688ZM79.7406 3.98512C79.1649 3.98512 78.6703 3.79163 78.257 3.40465C77.851 3.01023 77.648 2.54139 77.648 1.99814C77.648 1.44744 77.851 0.978604 78.257 0.591627C78.6703 0.197209 79.1649 0 79.7406 0C80.3164 0 80.8072 0.197209 81.2132 0.591627C81.6266 0.978604 81.8333 1.44744 81.8333 1.99814C81.8333 2.54139 81.6266 3.01023 81.2132 3.40465C80.8072 3.79163 80.3164 3.98512 79.7406 3.98512Z"
-            fill="black"
-          />
-          <path
-            d="M95.359 16.666V6.6307H98.6806V23.7767H95.4254V20.8074H95.2482C94.857 21.7228 94.2296 22.4856 93.366 23.0958C92.5098 23.6986 91.4431 24 90.1662 24C89.0737 24 88.1068 23.7581 87.2653 23.2744C86.4312 22.7833 85.7743 22.0577 85.2945 21.0977C84.8221 20.1377 84.5859 18.9507 84.5859 17.5367V6.6307H87.8964V17.1349C87.8964 18.3033 88.2175 19.2335 88.8597 19.9256C89.5019 20.6177 90.3359 20.9637 91.362 20.9637C91.982 20.9637 92.5983 20.8074 93.211 20.4949C93.831 20.1823 94.344 19.7098 94.75 19.0772C95.1633 18.4446 95.3663 17.6409 95.359 16.666Z"
-            fill="black"
-          />
-          <path
-            d="M101.882 23.7767V6.6307H105.059V9.42139H105.27C105.624 8.47628 106.203 7.73954 107.008 7.21116C107.813 6.67535 108.776 6.40744 109.898 6.40744C111.034 6.40744 111.987 6.67535 112.754 7.21116C113.529 7.74698 114.101 8.48372 114.471 9.42139H114.648C115.054 8.50605 115.699 7.77674 116.585 7.23349C117.471 6.68279 118.527 6.40744 119.752 6.40744C121.295 6.40744 122.553 6.89488 123.527 7.86977C124.509 8.84465 125 10.3144 125 12.2791V23.7767H121.689V12.5916C121.689 11.4307 121.376 10.5898 120.748 10.0688C120.121 9.54791 119.372 9.28744 118.501 9.28744C117.423 9.28744 116.585 9.62233 115.987 10.2921C115.389 10.9544 115.091 11.8065 115.091 12.8484V23.7767H111.791V12.3795C111.791 11.4493 111.503 10.7014 110.927 10.1358C110.352 9.57023 109.602 9.28744 108.68 9.28744C108.052 9.28744 107.473 9.45488 106.942 9.78977C106.417 10.1172 105.993 10.5749 105.668 11.1628C105.351 11.7507 105.192 12.4316 105.192 13.2056V23.7767H101.882Z"
-            fill="black"
-          />
-        </svg>
-      </a>
+      {% if profile_complete %}
+      <p class="text-success">✔ Profile is complete</p>
+      {% else %}
+      <p class="text-danger">✖ This profile is not complete</p>
+      {% endif %} {% if current_user.user_type == 'student' %}
+      <!-- Student Dashboard -->
+      <div class="row g-4 mt-4">
+        <!-- Update User Info -->
+        <div class="col-md-4">
+          <div class="card shadow-sm">
+            <div class="card-body">
+              <h5 class="card-title">Update Profile</h5>
+              <p class="card-text">
+                Edit your name, email, password, and profile picture.
+              </p>
+              <a href="/profile/edit" class="btn btn-primary w-100"
+                >Update Info</a
+              >
+            </div>
+          </div>
+        </div>
+
+        <!-- Show All Internships -->
+        <div class="col-md-4">
+          <div class="card shadow-sm">
+            <div class="card-body">
+              <h5 class="card-title">Browse Internships</h5>
+              <p class="card-text">View all currently available internships.</p>
+              <a href="/internships" class="btn btn-success w-100"
+                >Show Internships</a
+              >
+            </div>
+          </div>
+        </div>
+
       </div>
+
+      <!-- Applied Internships Section -->
+      <div class="mt-5">
+        <h3>Your Applied Internships</h3>
+
+        {% if applications %}
+
+        <ul class="list-group mt-3">
+          {% for app in applications %}
+          <li class="list-group-item">
+            <h5>{{ app.title }} at {{ app.company_name }}</h5>
+            <p><strong>Location:</strong> {{ app.location }}</p>
+            <p>
+            <strong>Status:</strong>
+            {% if app.status.lower() == 'hired' %}
+              <span class="text-success">Hired</span>
+            {% else %}
+              {{ app.status.capitalize() }}
+              <form
+              action="{{ url_for('dashboard.withdraw_application') }}"
+              method="post"
+              class="mt-2"
+            >
+              <input
+                type="hidden"
+                name="application_id"
+                value="{{ app.application_id }}"
+              />
+              <button type="submit" class="btn btn-sm btn-danger">
+                Withdraw
+              </button>
+            </form>
+            {% endif %}
+            </p>
+
+            <p>{{ app.description }}</p>
+            <small class="text-muted"
+              >Applied on: {{ app.applied_at.strftime('%Y-%m-%d') }}</small
+            >
+
+            <!-- Withdraw Button -->
+            
+          </li>
+          {% endfor %}
+        </ul>
+        {% else %}
+        <p class="text-muted mt-3">
+          You have not applied to any internships yet.
+        </p>
+        {% endif %}
+      </div>
+
+      {% elif current_user.user_type == 'recruiter' %}
+      <!-- Recruiter Dashboard -->
+      <div class="row g-4 mt-4">
+        <!-- Update Profile -->
+        <div class="col-md-4">
+          <div class="card shadow-sm">
+            <div class="card-body">
+              <h5 class="card-title">Update Profile</h5>
+              <p class="card-text">
+                Edit your recruiter info including password and email.
+              </p>
+              <a href="/profile/edit" class="btn btn-primary w-100"
+                >Update Info</a
+              >
+            </div>
+          </div>
+        </div>
+
+        <!-- View Posted Internships -->
+        <div class="col-md-4">
+          <div class="card shadow-sm">
+            <div class="card-body">
+              <h5 class="card-title">Manage Internships</h5>
+              <p class="card-text">
+                View internships you’ve posted and the number of applicants.
+              </p>
+              <a
+                href="{{ url_for('internship.manage_internships') }}"
+                class="btn btn-success w-100"
+                >Show Internships</a
+              >
+            </div>
+          </div>
+        </div>
+
+      {% else %}
+      <p>This is content for other user types.</p>
+      {% endif %}
+
+      <form action="{{ url_for('auth.logout') }}" method="get" class="mt-5">
+        <button type="submit" class="btn btn-outline-danger">Logout</button>
+      </form>
     </div>
-    <h1>DASHBOARD</h1>
   </body>
 </html>

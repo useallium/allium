@@ -60,7 +60,7 @@ class Users(Database):
         return self.get_user_by_id(user_id)
     
     def get_user_by_email(self, email):
-        query = "SELECT user_id, email, password_hash, user_type FROM Users WHERE email = %s"
+        query = "SELECT user_id, email, password_hash, user_type, first_name, last_name FROM Users WHERE email = %s"
         self.cursor.execute(query, (email,))
         result = self.cursor.fetchone()
 
@@ -69,7 +69,9 @@ class Users(Database):
                 'user_id': result['user_id'],
                 'email': result['email'],
                 'password_hash': result['password_hash'],
-                'user_type': result['user_type']
+                'user_type': result['user_type'],
+                'first_name': result['first_name'],
+                'last_name':result['last_name']
             }
         return None
 

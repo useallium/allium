@@ -32,3 +32,22 @@ class Recruiters(Database):
         self.cursor.execute(query, (job_title, phone_number, recruiter_id))
         self.conn.commit()
         return self.cursor.rowcount  # Number of rows updated
+    
+    def add_recruiter(self, company_id, recruiter_id, job_title, phone_number):
+        """
+        Update a recruiter's information in the database.
+        """
+        query = """
+        INSERT INTO Recruiters (company_id, job_title, phone_number, recruiter_id)
+        VALUES (%s, %s, %s, %s)
+        """
+        self.cursor.execute(query, (company_id, job_title, phone_number, recruiter_id))
+
+        self.conn.commit()
+        return self.cursor.rowcount  # Number of rows updated
+    
+    def get_recruiter_info_by_user_id(self, user_id):
+        query = "SELECT * FROM Recruiters WHERE recruiter_id = %s"
+        self.cursor.execute(query,(user_id,))
+        result = self.cursor.fetchone()
+        return result

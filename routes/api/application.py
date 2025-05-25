@@ -1,5 +1,6 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request,url_for,redirect
 from database.applications import Applications
+from database.base import Database
 
 #test
 
@@ -63,3 +64,33 @@ def update_application():
             'application_id': application_id
         }), 400
     
+@api.route('/update_status', methods=['POST'])
+def update_application_status():
+    application_id = request.form.get('application_id')
+    new_status = request.form.get('status')
+
+    db = Applications()  # Create instance of your DB class
+    success = db.update_application_status(new_status,application_id)
+
+    if success:
+        print("Status updated successfully.", "success")
+    else:
+        print("Failed to update status.", "danger")
+
+    # Optionally, close connection here if you want after update
+    
+
+    return redirect(url_for('internship.manage_internships'))
+
+@api.route('applications/num_applicants/<int:internship_id>', methods=['GET'])
+def get_num_applicants(internship_id):
+    db = Database()
+    db.cursor.callproc('GetTotalApplications', [internship_id])
+
+    count = 0 
+    for result in db.cursor.stored_results():
+        row = result.fetchone()
+        if row:
+            count = row['total_applications']
+
+    return jsonify({'total_applications': count})
